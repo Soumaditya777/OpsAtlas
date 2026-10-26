@@ -1,0 +1,38 @@
+
+[
+  {
+    "question": "What should I verify before rolling back a database migration?",
+    "answerable": true,
+    "expected_sources": ["deployment_rollback.md"]
+  },
+  {
+    "question": "What should I check when API latency rises but CPU usage is normal?",
+    "answerable": true,
+    "expected_sources": ["runbook.md", "database_troubleshooting.md"]
+  },
+  {
+    "question": "How should I investigate database connection pool exhaustion?",
+    "answerable": true,
+    "expected_sources": ["database_troubleshooting.md"]
+  },
+  {
+    "question": "What evidence should I collect before escalating an incident?",
+    "answerable": true,
+    "expected_sources": ["incident_response.md", "database_troubleshooting.md"]
+  },
+  {
+    "question": "How do I verify recovery after an application rollback?",
+    "answerable": true,
+    "expected_sources": ["deployment_rollback.md"]
+  },
+  {
+    "question": "What is the company's on-call engineer's phone number?",
+    "answerable": false,
+    "expected_sources": []
+  },
+  {
+    "question": "What exact database connection-pool size should I configure?",
+    "answerable": false,
+    "expected_sources": []
+  }
+]

@@ -1,0 +1,44 @@
+
+[
+  {
+    "question": "What should I check when API latency increases but CPU usage is normal?",
+    "relevant_sources": [
+      "runbook.md",
+      "database_troubleshooting.md"
+    ]
+  },
+  {
+    "question": "What information should be recorded before escalating an incident?",
+    "relevant_sources": [
+      "incident_response.md",
+      "database_troubleshooting.md"
+    ]
+  },
+  {
+    "question": "What should I investigate when latency increases after a deployment?",
+    "relevant_sources": [
+      "deployment_rollback.md",
+      "runbook.md"
+    ]
+  },
+  {
+    "question": "What should I verify before rolling back a database migration?",
+    "relevant_sources": [
+      "deployment_rollback.md"
+    ]
+  },
+  {
+    "question": "How do I investigate database connection pool exhaustion?",
+    "relevant_sources": [
+      "database_troubleshooting.md",
+      "runbook.md"
+    ]
+  },
+  {
+    "question": "How should I verify service recovery after a rollback?",
+    "relevant_sources": [
+      "deployment_rollback.md",
+      "incident_response.md"
+    ]
+  }
+]

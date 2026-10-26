@@ -1,0 +1,568 @@
+[
+  {
+    "question": "What should I verify before rolling back a database migration?",
+    "answerable": true,
+    "answer": "- Before rolling back a database migration, verify whether the problem affects all instances or only instances running the new version .\n- Ensure that database migrations, schema changes, or data-format changes do not make rollback unsafe [1].\n- Follow the organization's change-management and incident-response procedures before proceeding with the rollback [1].",
+    "citations": [
+      {
+        "citation_id": 1,
+        "source": "data/docs/deployment_rollback.md",
+        "page": null,
+        "quote": "deployment status, instance health, readiness checks, restart events, and rollout progress. ### 6. Determine the scope Establish whether the problem affects all instances or only instances running the new version. ## Rollback Decision Consider rollback when evidence strongly suggests that a recent release caused customer-impacting degradation and an approved rollback path exists. Before proceeding, verify whether database migrations, schema changes, or data-format changes could make rollback unsafe. Follow the organization's change-management and incident-response procedures. Do not perform a rollback solely because two events occurred at the same time. ## Recovery Verification After an approved rollback or mitigation: - Confirm that application instances and readiness checks are healthy. - Compare latency and error rates against the known healthy baseline. - Test affected endpoints using approved health checks. - Monitor for recurrence of the incident. ## Escalation Record the release identifier, deployment timestamps, configuration changes, affected endpoints, relevant logs, trace IDs, mitigation steps, and recovery evidence. Escalate to the service owner if the issue persists or rollback safety is uncertain. ## Evidence Limitations This runbook does not specify organization-specific approval requirements, deployment"
+      }
+    ],
+    "retrieval": [
+      {
+        "source": "data/docs/deployment_rollback.md",
+        "page": null,
+        "chunk_id": 1,
+        "text": "deployment status, instance health, readiness checks, restart events, and rollout progress. ### 6. Determine the scope Establish whether the problem affects all instances or only instances running the new version. ## Rollback Decision Consider rollback when evidence strongly suggests that a recent release caused customer-impacting degradation and an approved rollback path exists. Before proceeding, verify whether database migrations, schema changes, or data-format changes could make rollback unsafe. Follow the organization's change-management and incident-response procedures. Do not perform a rollback solely because two events occurred at the same time. ## Recovery Verification After an approved rollback or mitigation: - Confirm that application instances and readiness checks are healthy. - Compare latency and error rates against the known healthy baseline. - Test affected endpoints using approved health checks. - Monitor for recurrence of the incident. ## Escalation Record the release identifier, deployment timestamps, configuration changes, affected endpoints, relevant logs, trace IDs, mitigation steps, and recovery evidence. Escalate to the service owner if the issue persists or rollback safety is uncertain. ## Evidence Limitations This runbook does not specify organization-specific approval requirements, deployment",
+        "bm25_score": 1.8228579392640791,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.03252247488101534,
+        "reranker_score": 5.575232982635498
+      },
+      {
+        "source": "data/docs/database_troubleshooting.md",
+        "page": null,
+        "chunk_id": 1,
+        "text": "determine whether request time is spent acquiring a database connection, executing a query, or waiting on another service. ### 5. Review recent changes Check application releases, database migrations, configuration changes, traffic spikes, and changes to query patterns. ## Mitigation - Follow approved procedures for investigating or terminating harmful queries. - Address lock contention using database-specific operational procedures. - Consider rollback if a recent change is strongly associated with the incident and rollback is safe. - Do not increase connection-pool size blindly. Excessive connections can overload the database. ## Escalation Record the incident time window, affected services and endpoints, database metrics, connection-pool metrics, representative trace IDs, relevant query identifiers, and recent changes. Escalate to the database or service owner if the cause remains unclear or the incident persists. ## Evidence Limitations This generic runbook does not define universal connection-pool sizes, query timeout values, or database-specific commands. Consult the relevant service configuration and official database documentation.",
+        "bm25_score": 0.9879524180946031,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.03149801587301587,
+        "reranker_score": 1.5091859102249146
+      },
+      {
+        "source": "data/docs/deployment_rollback.md",
+        "page": null,
+        "chunk_id": 0,
+        "text": "# Deployment and Rollback Runbook ## Purpose Investigate service degradation that begins during or shortly after an application deployment. ## Trigger Conditions - API latency or error rates increase after a release. - Health checks fail or application instances repeatedly restart. - A new application version produces unexpected behavior. - A configuration or dependency change coincides with an incident. ## Investigation Steps ### 1. Establish the timeline Identify when the incident started, the affected service, and the currently deployed version. ### 2. Compare service metrics Compare p50, p95, and p99 latency, error rates, traffic, and resource utilization before and after deployment. ### 3. Review release changes Inspect release notes, code changes, configuration updates, database migrations, and dependency upgrades. ### 4. Inspect logs and traces Look for new exceptions, slow downstream calls, failed requests, and changes in request execution paths. ### 5. Check deployment health Review deployment status, instance health, readiness checks, restart events, and rollout progress. ### 6. Determine the scope Establish whether the problem affects all instances or only instances running the new version. ## Rollback Decision Consider rollback",
+        "bm25_score": 0.9280942889592969,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.0315136476426799,
+        "reranker_score": -0.4101029634475708
+      },
+      {
+        "source": "data/docs/deployment_rollback.md",
+        "page": null,
+        "chunk_id": 2,
+        "text": "relevant logs, trace IDs, mitigation steps, and recovery evidence. Escalate to the service owner if the issue persists or rollback safety is uncertain. ## Evidence Limitations This runbook does not specify organization-specific approval requirements, deployment commands, or rollback tooling. Consult the service's official release procedure before taking action.",
+        "bm25_score": 0.38729712332002175,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.030090497737556562,
+        "reranker_score": -5.06733512878418
+      },
+      {
+        "source": "data/docs/runbook.md",
+        "page": null,
+        "chunk_id": 0,
+        "text": "# API Latency Troubleshooting ## Initial investigation Compare p50, p95, and p99 latency against the last healthy period. Identify affected endpoints and when the problem started. ## Dependency checks Normal CPU usage does not rule out database connection pool exhaustion, network delays, lock contention, thread pool starvation, or slow downstream services. Inspect distributed traces and dependency-specific latency before restarting services. ## Recent deployments If latency increased after deployment, compare the current version and configuration with the last known-good release. Review changed queries, connection pool settings, errors, and downstream timeouts. ## Escalation Capture timestamps, affected endpoints, representative trace IDs, recent changes, and relevant metrics before escalating to the service owner.",
+        "bm25_score": 0.7266824222712119,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.03007688828584351,
+        "reranker_score": -8.497442245483398
+      }
+    ],
+    "checks": {
+      "has_citation_markers": true,
+      "citation_ids_resolve": true,
+      "citation_sources_in_retrieval": true,
+      "citation_quality_pass": true,
+      "abstention_quality_pass": null,
+      "expected_sources_retrieved": [
+        "deployment_rollback.md"
+      ],
+      "source_recall_at_5": 1.0,
+      "manual_answer_review_required": true
+    }
+  },
+  {
+    "question": "What should I check when API latency rises but CPU usage is normal?",
+    "answerable": true,
+    "answer": "- According to [2], when API latency rises but CPU usage is normal, you should check dependency-specific latency by inspecting distributed traces.\n- [2] also suggests reviewing recent deployments and configuration changes to identify any changes that might have caused the issue.\n- [3] provides a similar recommendation, advising to review release changes and deployment health to determine if the problem is related to a recent deployment.",
+    "citations": [
+      {
+        "citation_id": 2,
+        "source": "data/docs/runbook.md",
+        "page": null,
+        "quote": "# API Latency Troubleshooting ## Initial investigation Compare p50, p95, and p99 latency against the last healthy period. Identify affected endpoints and when the problem started. ## Dependency checks Normal CPU usage does not rule out database connection pool exhaustion, network delays, lock contention, thread pool starvation, or slow downstream services. Inspect distributed traces and dependency-specific latency before restarting services. ## Recent deployments If latency increased after deployment, compare the current version and configuration with the last known-good release. Review changed queries, connection pool settings, errors, and downstream timeouts. ## Escalation Capture timestamps, affected endpoints, representative trace IDs, recent changes, and relevant metrics before escalating to the service owner."
+      },
+      {
+        "citation_id": 3,
+        "source": "data/docs/deployment_rollback.md",
+        "page": null,
+        "quote": "# Deployment and Rollback Runbook ## Purpose Investigate service degradation that begins during or shortly after an application deployment. ## Trigger Conditions - API latency or error rates increase after a release. - Health checks fail or application instances repeatedly restart. - A new application version produces unexpected behavior. - A configuration or dependency change coincides with an incident. ## Investigation Steps ### 1. Establish the timeline Identify when the incident started, the affected service, and the currently deployed version. ### 2. Compare service metrics Compare p50, p95, and p99 latency, error rates, traffic, and resource utilization before and after deployment. ### 3. Review release changes Inspect release notes, code changes, configuration updates, database migrations, and dependency upgrades. ### 4. Inspect logs and traces Look for new exceptions, slow downstream calls, failed requests, and changes in request execution paths. ### 5. Check deployment health Review deployment status, instance health, readiness checks, restart events, and rollout progress. ### 6. Determine the scope Establish whether the problem affects all instances or only instances running the new version. ## Rollback Decision Consider rollback"
+      }
+    ],
+    "retrieval": [
+      {
+        "source": "data/docs/database_troubleshooting.md",
+        "page": null,
+        "chunk_id": 0,
+        "text": "# Database Troubleshooting Runbook ## Purpose Investigate application incidents that may involve database latency, connectivity, or resource contention. ## Symptoms - API latency increases while application CPU usage remains normal. - Database query latency rises or throughput decreases. - Applications report connection timeouts or connection-pool acquisition timeouts. - Error rates increase for endpoints that depend on database queries. ## Investigation Steps ### 1. Check database health Review database availability, connection counts, resource utilization, and recent alerts. Compare current metrics with a known healthy period. ### 2. Inspect connection pools Check active, idle, waiting, and timed-out connections where those metrics are available. Pool exhaustion may cause application requests to wait even when CPU usage is low. ### 3. Analyze query performance Review slow-query logs, query execution times, and query plans where available. Investigate long-running transactions and lock contention. ### 4. Trace dependencies Use distributed traces to determine whether request time is spent acquiring a database connection, executing a query, or waiting on another service. ### 5. Review recent changes Check application releases, database migrations, configuration changes, traffic spikes, and changes to",
+        "bm25_score": 7.267063533684193,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.03252247488101534,
+        "reranker_score": 5.816718101501465
+      },
+      {
+        "source": "data/docs/runbook.md",
+        "page": null,
+        "chunk_id": 0,
+        "text": "# API Latency Troubleshooting ## Initial investigation Compare p50, p95, and p99 latency against the last healthy period. Identify affected endpoints and when the problem started. ## Dependency checks Normal CPU usage does not rule out database connection pool exhaustion, network delays, lock contention, thread pool starvation, or slow downstream services. Inspect distributed traces and dependency-specific latency before restarting services. ## Recent deployments If latency increased after deployment, compare the current version and configuration with the last known-good release. Review changed queries, connection pool settings, errors, and downstream timeouts. ## Escalation Capture timestamps, affected endpoints, representative trace IDs, recent changes, and relevant metrics before escalating to the service owner.",
+        "bm25_score": 5.176426060403397,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.03252247488101534,
+        "reranker_score": 5.373226165771484
+      },
+      {
+        "source": "data/docs/deployment_rollback.md",
+        "page": null,
+        "chunk_id": 0,
+        "text": "# Deployment and Rollback Runbook ## Purpose Investigate service degradation that begins during or shortly after an application deployment. ## Trigger Conditions - API latency or error rates increase after a release. - Health checks fail or application instances repeatedly restart. - A new application version produces unexpected behavior. - A configuration or dependency change coincides with an incident. ## Investigation Steps ### 1. Establish the timeline Identify when the incident started, the affected service, and the currently deployed version. ### 2. Compare service metrics Compare p50, p95, and p99 latency, error rates, traffic, and resource utilization before and after deployment. ### 3. Review release changes Inspect release notes, code changes, configuration updates, database migrations, and dependency upgrades. ### 4. Inspect logs and traces Look for new exceptions, slow downstream calls, failed requests, and changes in request execution paths. ### 5. Check deployment health Review deployment status, instance health, readiness checks, restart events, and rollout progress. ### 6. Determine the scope Establish whether the problem affects all instances or only instances running the new version. ## Rollback Decision Consider rollback",
+        "bm25_score": 1.354008558898103,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.03149801587301587,
+        "reranker_score": -3.8894262313842773
+      },
+      {
+        "source": "data/docs/incident_response.md",
+        "page": null,
+        "chunk_id": 2,
+        "text": "and relevant metrics. 2. Confirm that error rates and latency have returned toward the healthy baseline. 3. Document the timeline, confirmed root cause, contributing factors, and mitigation. 4. Record follow-up actions and owners. 5. Create a post-incident review when required by organizational policy. ## Evidence Limitations This generic runbook does not define company-specific severity levels, response-time targets, or on-call contacts. Consult the organization's official incident policy for those details.",
+        "bm25_score": 0.7042893102153749,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.030309988518943745,
+        "reranker_score": -9.724494934082031
+      },
+      {
+        "source": "data/docs/incident_response.md",
+        "page": null,
+        "chunk_id": 0,
+        "text": "# Incident Response and Escalation Runbook ## Purpose Provide a consistent process for triaging, documenting, and escalating technical incidents. ## Initial Triage ### 1. Identify the impact Determine the affected service, user-visible symptoms, approximate start time, and scope of impact. ### 2. Inspect service health Compare current error rates, latency percentiles, traffic, and resource metrics with a known healthy baseline. ### 3. Investigate evidence Review relevant alerts, application logs, distributed traces, and dependency metrics. ### 4. Review recent changes Check recent deployments, configuration changes, infrastructure changes, and dependency incidents. ### 5. Avoid premature remediation Do not perform destructive or broad changes before understanding the likely failure area. Follow approved operational procedures. ## Evidence Collection Before escalating, collect: - Incident timestamps and time zone. - Affected services and endpoints. - Representative trace IDs or request IDs. - Relevant logs and metrics covering the incident window. - Recent deployments and configuration changes. - Investigation steps already performed and their outcomes. - Mitigations attempted and whether they improved the situation. Do not include passwords, access tokens, or unnecessary personal data in incident reports.",
+        "bm25_score": 0.43095674149385393,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.029857397504456328,
+        "reranker_score": -9.932456970214844
+      }
+    ],
+    "checks": {
+      "has_citation_markers": true,
+      "citation_ids_resolve": true,
+      "citation_sources_in_retrieval": true,
+      "citation_quality_pass": true,
+      "abstention_quality_pass": null,
+      "expected_sources_retrieved": [
+        "database_troubleshooting.md",
+        "runbook.md"
+      ],
+      "source_recall_at_5": 1.0,
+      "manual_answer_review_required": true
+    }
+  },
+  {
+    "question": "How should I investigate database connection pool exhaustion?",
+    "answerable": true,
+    "answer": "- [1] provides steps to investigate database connection pool exhaustion, including checking connection pools and analyzing query performance.\n- [2] offers dependency checks for API latency issues, which can include investigating database connection pools.\n- [3] further details steps for investigating database connection pool exhaustion, including tracing dependencies and reviewing recent changes.\n- [4] and [5] provide broader incident response and rollback runbooks, which can be used to understand the context of database connection pool exhaustion investigations.",
+    "citations": [
+      {
+        "citation_id": 1,
+        "source": "data/docs/database_troubleshooting.md",
+        "page": null,
+        "quote": "# Database Troubleshooting Runbook ## Purpose Investigate application incidents that may involve database latency, connectivity, or resource contention. ## Symptoms - API latency increases while application CPU usage remains normal. - Database query latency rises or throughput decreases. - Applications report connection timeouts or connection-pool acquisition timeouts. - Error rates increase for endpoints that depend on database queries. ## Investigation Steps ### 1. Check database health Review database availability, connection counts, resource utilization, and recent alerts. Compare current metrics with a known healthy period. ### 2. Inspect connection pools Check active, idle, waiting, and timed-out connections where those metrics are available. Pool exhaustion may cause application requests to wait even when CPU usage is low. ### 3. Analyze query performance Review slow-query logs, query execution times, and query plans where available. Investigate long-running transactions and lock contention. ### 4. Trace dependencies Use distributed traces to determine whether request time is spent acquiring a database connection, executing a query, or waiting on another service. ### 5. Review recent changes Check application releases, database migrations, configuration changes, traffic spikes, and changes to"
+      },
+      {
+        "citation_id": 2,
+        "source": "data/docs/runbook.md",
+        "page": null,
+        "quote": "# API Latency Troubleshooting ## Initial investigation Compare p50, p95, and p99 latency against the last healthy period. Identify affected endpoints and when the problem started. ## Dependency checks Normal CPU usage does not rule out database connection pool exhaustion, network delays, lock contention, thread pool starvation, or slow downstream services. Inspect distributed traces and dependency-specific latency before restarting services. ## Recent deployments If latency increased after deployment, compare the current version and configuration with the last known-good release. Review changed queries, connection pool settings, errors, and downstream timeouts. ## Escalation Capture timestamps, affected endpoints, representative trace IDs, recent changes, and relevant metrics before escalating to the service owner."
+      },
+      {
+        "citation_id": 3,
+        "source": "data/docs/database_troubleshooting.md",
+        "page": null,
+        "quote": "determine whether request time is spent acquiring a database connection, executing a query, or waiting on another service. ### 5. Review recent changes Check application releases, database migrations, configuration changes, traffic spikes, and changes to query patterns. ## Mitigation - Follow approved procedures for investigating or terminating harmful queries. - Address lock contention using database-specific operational procedures. - Consider rollback if a recent change is strongly associated with the incident and rollback is safe. - Do not increase connection-pool size blindly. Excessive connections can overload the database. ## Escalation Record the incident time window, affected services and endpoints, database metrics, connection-pool metrics, representative trace IDs, relevant query identifiers, and recent changes. Escalate to the database or service owner if the cause remains unclear or the incident persists. ## Evidence Limitations This generic runbook does not define universal connection-pool sizes, query timeout values, or database-specific commands. Consult the relevant service configuration and official database documentation."
+      },
+      {
+        "citation_id": 4,
+        "source": "data/docs/deployment_rollback.md",
+        "page": null,
+        "quote": "# Deployment and Rollback Runbook ## Purpose Investigate service degradation that begins during or shortly after an application deployment. ## Trigger Conditions - API latency or error rates increase after a release. - Health checks fail or application instances repeatedly restart. - A new application version produces unexpected behavior. - A configuration or dependency change coincides with an incident. ## Investigation Steps ### 1. Establish the timeline Identify when the incident started, the affected service, and the currently deployed version. ### 2. Compare service metrics Compare p50, p95, and p99 latency, error rates, traffic, and resource utilization before and after deployment. ### 3. Review release changes Inspect release notes, code changes, configuration updates, database migrations, and dependency upgrades. ### 4. Inspect logs and traces Look for new exceptions, slow downstream calls, failed requests, and changes in request execution paths. ### 5. Check deployment health Review deployment status, instance health, readiness checks, restart events, and rollout progress. ### 6. Determine the scope Establish whether the problem affects all instances or only instances running the new version. ## Rollback Decision Consider rollback"
+      },
+      {
+        "citation_id": 5,
+        "source": "data/docs/incident_response.md",
+        "page": null,
+        "quote": "# Incident Response and Escalation Runbook ## Purpose Provide a consistent process for triaging, documenting, and escalating technical incidents. ## Initial Triage ### 1. Identify the impact Determine the affected service, user-visible symptoms, approximate start time, and scope of impact. ### 2. Inspect service health Compare current error rates, latency percentiles, traffic, and resource metrics with a known healthy baseline. ### 3. Investigate evidence Review relevant alerts, application logs, distributed traces, and dependency metrics. ### 4. Review recent changes Check recent deployments, configuration changes, infrastructure changes, and dependency incidents. ### 5. Avoid premature remediation Do not perform destructive or broad changes before understanding the likely failure area. Follow approved operational procedures. ## Evidence Collection Before escalating, collect: - Incident timestamps and time zone. - Affected services and endpoints. - Representative trace IDs or request IDs. - Relevant logs and metrics covering the incident window. - Recent deployments and configuration changes. - Investigation steps already performed and their outcomes. - Mitigations attempted and whether they improved the situation. Do not include passwords, access tokens, or unnecessary personal data in incident reports."
+      }
+    ],
+    "retrieval": [
+      {
+        "source": "data/docs/database_troubleshooting.md",
+        "page": null,
+        "chunk_id": 0,
+        "text": "# Database Troubleshooting Runbook ## Purpose Investigate application incidents that may involve database latency, connectivity, or resource contention. ## Symptoms - API latency increases while application CPU usage remains normal. - Database query latency rises or throughput decreases. - Applications report connection timeouts or connection-pool acquisition timeouts. - Error rates increase for endpoints that depend on database queries. ## Investigation Steps ### 1. Check database health Review database availability, connection counts, resource utilization, and recent alerts. Compare current metrics with a known healthy period. ### 2. Inspect connection pools Check active, idle, waiting, and timed-out connections where those metrics are available. Pool exhaustion may cause application requests to wait even when CPU usage is low. ### 3. Analyze query performance Review slow-query logs, query execution times, and query plans where available. Investigate long-running transactions and lock contention. ### 4. Trace dependencies Use distributed traces to determine whether request time is spent acquiring a database connection, executing a query, or waiting on another service. ### 5. Review recent changes Check application releases, database migrations, configuration changes, traffic spikes, and changes to",
+        "bm25_score": 4.4260475150406355,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.03278688524590164,
+        "reranker_score": 5.052852630615234
+      },
+      {
+        "source": "data/docs/runbook.md",
+        "page": null,
+        "chunk_id": 0,
+        "text": "# API Latency Troubleshooting ## Initial investigation Compare p50, p95, and p99 latency against the last healthy period. Identify affected endpoints and when the problem started. ## Dependency checks Normal CPU usage does not rule out database connection pool exhaustion, network delays, lock contention, thread pool starvation, or slow downstream services. Inspect distributed traces and dependency-specific latency before restarting services. ## Recent deployments If latency increased after deployment, compare the current version and configuration with the last known-good release. Review changed queries, connection pool settings, errors, and downstream timeouts. ## Escalation Capture timestamps, affected endpoints, representative trace IDs, recent changes, and relevant metrics before escalating to the service owner.",
+        "bm25_score": 4.416103532919502,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.03200204813108039,
+        "reranker_score": 4.022170543670654
+      },
+      {
+        "source": "data/docs/database_troubleshooting.md",
+        "page": null,
+        "chunk_id": 1,
+        "text": "determine whether request time is spent acquiring a database connection, executing a query, or waiting on another service. ### 5. Review recent changes Check application releases, database migrations, configuration changes, traffic spikes, and changes to query patterns. ## Mitigation - Follow approved procedures for investigating or terminating harmful queries. - Address lock contention using database-specific operational procedures. - Consider rollback if a recent change is strongly associated with the incident and rollback is safe. - Do not increase connection-pool size blindly. Excessive connections can overload the database. ## Escalation Record the incident time window, affected services and endpoints, database metrics, connection-pool metrics, representative trace IDs, relevant query identifiers, and recent changes. Escalate to the database or service owner if the cause remains unclear or the incident persists. ## Evidence Limitations This generic runbook does not define universal connection-pool sizes, query timeout values, or database-specific commands. Consult the relevant service configuration and official database documentation.",
+        "bm25_score": 1.1354620230692034,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.031754032258064516,
+        "reranker_score": 0.623060405254364
+      },
+      {
+        "source": "data/docs/deployment_rollback.md",
+        "page": null,
+        "chunk_id": 0,
+        "text": "# Deployment and Rollback Runbook ## Purpose Investigate service degradation that begins during or shortly after an application deployment. ## Trigger Conditions - API latency or error rates increase after a release. - Health checks fail or application instances repeatedly restart. - A new application version produces unexpected behavior. - A configuration or dependency change coincides with an incident. ## Investigation Steps ### 1. Establish the timeline Identify when the incident started, the affected service, and the currently deployed version. ### 2. Compare service metrics Compare p50, p95, and p99 latency, error rates, traffic, and resource utilization before and after deployment. ### 3. Review release changes Inspect release notes, code changes, configuration updates, database migrations, and dependency upgrades. ### 4. Inspect logs and traces Look for new exceptions, slow downstream calls, failed requests, and changes in request execution paths. ### 5. Check deployment health Review deployment status, instance health, readiness checks, restart events, and rollout progress. ### 6. Determine the scope Establish whether the problem affects all instances or only instances running the new version. ## Rollback Decision Consider rollback",
+        "bm25_score": 0.8080918240328936,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.031009615384615385,
+        "reranker_score": -9.405771255493164
+      },
+      {
+        "source": "data/docs/incident_response.md",
+        "page": null,
+        "chunk_id": 0,
+        "text": "# Incident Response and Escalation Runbook ## Purpose Provide a consistent process for triaging, documenting, and escalating technical incidents. ## Initial Triage ### 1. Identify the impact Determine the affected service, user-visible symptoms, approximate start time, and scope of impact. ### 2. Inspect service health Compare current error rates, latency percentiles, traffic, and resource metrics with a known healthy baseline. ### 3. Investigate evidence Review relevant alerts, application logs, distributed traces, and dependency metrics. ### 4. Review recent changes Check recent deployments, configuration changes, infrastructure changes, and dependency incidents. ### 5. Avoid premature remediation Do not perform destructive or broad changes before understanding the likely failure area. Follow approved operational procedures. ## Evidence Collection Before escalating, collect: - Incident timestamps and time zone. - Affected services and endpoints. - Representative trace IDs or request IDs. - Relevant logs and metrics covering the incident window. - Recent deployments and configuration changes. - Investigation steps already performed and their outcomes. - Mitigations attempted and whether they improved the situation. Do not include passwords, access tokens, or unnecessary personal data in incident reports.",
+        "bm25_score": 0.5616805579158174,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.030303030303030304,
+        "reranker_score": -10.257333755493164
+      }
+    ],
+    "checks": {
+      "has_citation_markers": true,
+      "citation_ids_resolve": true,
+      "citation_sources_in_retrieval": true,
+      "citation_quality_pass": true,
+      "abstention_quality_pass": null,
+      "expected_sources_retrieved": [
+        "database_troubleshooting.md"
+      ],
+      "source_recall_at_5": 1.0,
+      "manual_answer_review_required": true
+    }
+  },
+  {
+    "question": "What evidence should I collect before escalating an incident?",
+    "answerable": true,
+    "answer": "The evidence provided does not contain specific information on what evidence should be collected before escalating an incident. [1] and [2] focus on the process of escalation and severity, but do not detail the evidence collection process before escalation.",
+    "citations": [
+      {
+        "citation_id": 1,
+        "source": "data/docs/incident_response.md",
+        "page": null,
+        "quote": "# Incident Response and Escalation Runbook ## Purpose Provide a consistent process for triaging, documenting, and escalating technical incidents. ## Initial Triage ### 1. Identify the impact Determine the affected service, user-visible symptoms, approximate start time, and scope of impact. ### 2. Inspect service health Compare current error rates, latency percentiles, traffic, and resource metrics with a known healthy baseline. ### 3. Investigate evidence Review relevant alerts, application logs, distributed traces, and dependency metrics. ### 4. Review recent changes Check recent deployments, configuration changes, infrastructure changes, and dependency incidents. ### 5. Avoid premature remediation Do not perform destructive or broad changes before understanding the likely failure area. Follow approved operational procedures. ## Evidence Collection Before escalating, collect: - Incident timestamps and time zone. - Affected services and endpoints. - Representative trace IDs or request IDs. - Relevant logs and metrics covering the incident window. - Recent deployments and configuration changes. - Investigation steps already performed and their outcomes. - Mitigations attempted and whether they improved the situation. Do not include passwords, access tokens, or unnecessary personal data in incident reports."
+      },
+      {
+        "citation_id": 2,
+        "source": "data/docs/incident_response.md",
+        "page": null,
+        "quote": "Recent deployments and configuration changes. - Investigation steps already performed and their outcomes. - Mitigations attempted and whether they improved the situation. Do not include passwords, access tokens, or unnecessary personal data in incident reports. ## Severity and Communication Use the organization's official incident-severity definitions and communication channels. Incident updates should clearly distinguish confirmed facts from hypotheses. Do not invent impact estimates or declare recovery before verifying service health. ## Escalation Criteria Escalate to the owning service or specialist team when: - The issue requires access or expertise that the current responder does not have. - Customer impact continues despite initial investigation. - No safe mitigation has been identified. - The incident involves a critical dependency or suspected data integrity issue. Include collected evidence, actions already taken, current impact, and the next decision required. ## Recovery and Closure 1. Verify recovery using service health checks and relevant metrics. 2. Confirm that error rates and latency have returned toward the healthy baseline. 3. Document the timeline, confirmed root cause, contributing factors, and mitigation. 4. Record follow-up actions and owners. 5. Create"
+      }
+    ],
+    "retrieval": [
+      {
+        "source": "data/docs/incident_response.md",
+        "page": null,
+        "chunk_id": 0,
+        "text": "# Incident Response and Escalation Runbook ## Purpose Provide a consistent process for triaging, documenting, and escalating technical incidents. ## Initial Triage ### 1. Identify the impact Determine the affected service, user-visible symptoms, approximate start time, and scope of impact. ### 2. Inspect service health Compare current error rates, latency percentiles, traffic, and resource metrics with a known healthy baseline. ### 3. Investigate evidence Review relevant alerts, application logs, distributed traces, and dependency metrics. ### 4. Review recent changes Check recent deployments, configuration changes, infrastructure changes, and dependency incidents. ### 5. Avoid premature remediation Do not perform destructive or broad changes before understanding the likely failure area. Follow approved operational procedures. ## Evidence Collection Before escalating, collect: - Incident timestamps and time zone. - Affected services and endpoints. - Representative trace IDs or request IDs. - Relevant logs and metrics covering the incident window. - Recent deployments and configuration changes. - Investigation steps already performed and their outcomes. - Mitigations attempted and whether they improved the situation. Do not include passwords, access tokens, or unnecessary personal data in incident reports.",
+        "bm25_score": 4.243644176552481,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.03252247488101534,
+        "reranker_score": 5.138638496398926
+      },
+      {
+        "source": "data/docs/incident_response.md",
+        "page": null,
+        "chunk_id": 1,
+        "text": "Recent deployments and configuration changes. - Investigation steps already performed and their outcomes. - Mitigations attempted and whether they improved the situation. Do not include passwords, access tokens, or unnecessary personal data in incident reports. ## Severity and Communication Use the organization's official incident-severity definitions and communication channels. Incident updates should clearly distinguish confirmed facts from hypotheses. Do not invent impact estimates or declare recovery before verifying service health. ## Escalation Criteria Escalate to the owning service or specialist team when: - The issue requires access or expertise that the current responder does not have. - Customer impact continues despite initial investigation. - No safe mitigation has been identified. - The incident involves a critical dependency or suspected data integrity issue. Include collected evidence, actions already taken, current impact, and the next decision required. ## Recovery and Closure 1. Verify recovery using service health checks and relevant metrics. 2. Confirm that error rates and latency have returned toward the healthy baseline. 3. Document the timeline, confirmed root cause, contributing factors, and mitigation. 4. Record follow-up actions and owners. 5. Create",
+        "bm25_score": 2.455587980372287,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.03252247488101534,
+        "reranker_score": 3.0775604248046875
+      },
+      {
+        "source": "data/docs/deployment_rollback.md",
+        "page": null,
+        "chunk_id": 2,
+        "text": "relevant logs, trace IDs, mitigation steps, and recovery evidence. Escalate to the service owner if the issue persists or rollback safety is uncertain. ## Evidence Limitations This runbook does not specify organization-specific approval requirements, deployment commands, or rollback tooling. Consult the service's official release procedure before taking action.",
+        "bm25_score": 0.8823123484455221,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.031024531024531024,
+        "reranker_score": 2.3217129707336426
+      },
+      {
+        "source": "data/docs/deployment_rollback.md",
+        "page": null,
+        "chunk_id": 1,
+        "text": "deployment status, instance health, readiness checks, restart events, and rollout progress. ### 6. Determine the scope Establish whether the problem affects all instances or only instances running the new version. ## Rollback Decision Consider rollback when evidence strongly suggests that a recent release caused customer-impacting degradation and an approved rollback path exists. Before proceeding, verify whether database migrations, schema changes, or data-format changes could make rollback unsafe. Follow the organization's change-management and incident-response procedures. Do not perform a rollback solely because two events occurred at the same time. ## Recovery Verification After an approved rollback or mitigation: - Confirm that application instances and readiness checks are healthy. - Compare latency and error rates against the known healthy baseline. - Test affected endpoints using approved health checks. - Monitor for recurrence of the incident. ## Escalation Record the release identifier, deployment timestamps, configuration changes, affected endpoints, relevant logs, trace IDs, mitigation steps, and recovery evidence. Escalate to the service owner if the issue persists or rollback safety is uncertain. ## Evidence Limitations This runbook does not specify organization-specific approval requirements, deployment",
+        "bm25_score": 2.354815075886158,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.031024531024531024,
+        "reranker_score": -2.151038885116577
+      },
+      {
+        "source": "data/docs/database_troubleshooting.md",
+        "page": null,
+        "chunk_id": 1,
+        "text": "determine whether request time is spent acquiring a database connection, executing a query, or waiting on another service. ### 5. Review recent changes Check application releases, database migrations, configuration changes, traffic spikes, and changes to query patterns. ## Mitigation - Follow approved procedures for investigating or terminating harmful queries. - Address lock contention using database-specific operational procedures. - Consider rollback if a recent change is strongly associated with the incident and rollback is safe. - Do not increase connection-pool size blindly. Excessive connections can overload the database. ## Escalation Record the incident time window, affected services and endpoints, database metrics, connection-pool metrics, representative trace IDs, relevant query identifiers, and recent changes. Escalate to the database or service owner if the cause remains unclear or the incident persists. ## Evidence Limitations This generic runbook does not define universal connection-pool sizes, query timeout values, or database-specific commands. Consult the relevant service configuration and official database documentation.",
+        "bm25_score": 0.7102112272863399,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.030309988518943745,
+        "reranker_score": -2.2232110500335693
+      }
+    ],
+    "checks": {
+      "has_citation_markers": true,
+      "citation_ids_resolve": true,
+      "citation_sources_in_retrieval": true,
+      "citation_quality_pass": true,
+      "abstention_quality_pass": null,
+      "expected_sources_retrieved": [
+        "database_troubleshooting.md",
+        "incident_response.md"
+      ],
+      "source_recall_at_5": 1.0,
+      "manual_answer_review_required": true
+    }
+  },
+  {
+    "question": "How do I verify recovery after an application rollback?",
+    "answerable": true,
+    "answer": "- [1] states that after an approved rollback or mitigation, application instances and readiness checks should be confirmed as healthy.\n- [1] mentions that latency and error rates should be compared against the known healthy baseline after an approved rollback.\n- [1] advises testing affected endpoints using approved health checks after an approved rollback.",
+    "citations": [
+      {
+        "citation_id": 1,
+        "source": "data/docs/deployment_rollback.md",
+        "page": null,
+        "quote": "deployment status, instance health, readiness checks, restart events, and rollout progress. ### 6. Determine the scope Establish whether the problem affects all instances or only instances running the new version. ## Rollback Decision Consider rollback when evidence strongly suggests that a recent release caused customer-impacting degradation and an approved rollback path exists. Before proceeding, verify whether database migrations, schema changes, or data-format changes could make rollback unsafe. Follow the organization's change-management and incident-response procedures. Do not perform a rollback solely because two events occurred at the same time. ## Recovery Verification After an approved rollback or mitigation: - Confirm that application instances and readiness checks are healthy. - Compare latency and error rates against the known healthy baseline. - Test affected endpoints using approved health checks. - Monitor for recurrence of the incident. ## Escalation Record the release identifier, deployment timestamps, configuration changes, affected endpoints, relevant logs, trace IDs, mitigation steps, and recovery evidence. Escalate to the service owner if the issue persists or rollback safety is uncertain. ## Evidence Limitations This runbook does not specify organization-specific approval requirements, deployment"
+      }
+    ],
+    "retrieval": [
+      {
+        "source": "data/docs/deployment_rollback.md",
+        "page": null,
+        "chunk_id": 1,
+        "text": "deployment status, instance health, readiness checks, restart events, and rollout progress. ### 6. Determine the scope Establish whether the problem affects all instances or only instances running the new version. ## Rollback Decision Consider rollback when evidence strongly suggests that a recent release caused customer-impacting degradation and an approved rollback path exists. Before proceeding, verify whether database migrations, schema changes, or data-format changes could make rollback unsafe. Follow the organization's change-management and incident-response procedures. Do not perform a rollback solely because two events occurred at the same time. ## Recovery Verification After an approved rollback or mitigation: - Confirm that application instances and readiness checks are healthy. - Compare latency and error rates against the known healthy baseline. - Test affected endpoints using approved health checks. - Monitor for recurrence of the incident. ## Escalation Record the release identifier, deployment timestamps, configuration changes, affected endpoints, relevant logs, trace IDs, mitigation steps, and recovery evidence. Escalate to the service owner if the issue persists or rollback safety is uncertain. ## Evidence Limitations This runbook does not specify organization-specific approval requirements, deployment",
+        "bm25_score": 4.597868530581121,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.03252247488101534,
+        "reranker_score": 6.4861860275268555
+      },
+      {
+        "source": "data/docs/deployment_rollback.md",
+        "page": null,
+        "chunk_id": 0,
+        "text": "# Deployment and Rollback Runbook ## Purpose Investigate service degradation that begins during or shortly after an application deployment. ## Trigger Conditions - API latency or error rates increase after a release. - Health checks fail or application instances repeatedly restart. - A new application version produces unexpected behavior. - A configuration or dependency change coincides with an incident. ## Investigation Steps ### 1. Establish the timeline Identify when the incident started, the affected service, and the currently deployed version. ### 2. Compare service metrics Compare p50, p95, and p99 latency, error rates, traffic, and resource utilization before and after deployment. ### 3. Review release changes Inspect release notes, code changes, configuration updates, database migrations, and dependency upgrades. ### 4. Inspect logs and traces Look for new exceptions, slow downstream calls, failed requests, and changes in request execution paths. ### 5. Check deployment health Review deployment status, instance health, readiness checks, restart events, and rollout progress. ### 6. Determine the scope Establish whether the problem affects all instances or only instances running the new version. ## Rollback Decision Consider rollback",
+        "bm25_score": 3.181881350341123,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.03252247488101534,
+        "reranker_score": 1.0941083431243896
+      },
+      {
+        "source": "data/docs/deployment_rollback.md",
+        "page": null,
+        "chunk_id": 2,
+        "text": "relevant logs, trace IDs, mitigation steps, and recovery evidence. Escalate to the service owner if the issue persists or rollback safety is uncertain. ## Evidence Limitations This runbook does not specify organization-specific approval requirements, deployment commands, or rollback tooling. Consult the service's official release procedure before taking action.",
+        "bm25_score": 1.2362124091553195,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.03149801587301587,
+        "reranker_score": -0.36277085542678833
+      },
+      {
+        "source": "data/docs/database_troubleshooting.md",
+        "page": null,
+        "chunk_id": 1,
+        "text": "determine whether request time is spent acquiring a database connection, executing a query, or waiting on another service. ### 5. Review recent changes Check application releases, database migrations, configuration changes, traffic spikes, and changes to query patterns. ## Mitigation - Follow approved procedures for investigating or terminating harmful queries. - Address lock contention using database-specific operational procedures. - Consider rollback if a recent change is strongly associated with the incident and rollback is safe. - Do not increase connection-pool size blindly. Excessive connections can overload the database. ## Escalation Record the incident time window, affected services and endpoints, database metrics, connection-pool metrics, representative trace IDs, relevant query identifiers, and recent changes. Escalate to the database or service owner if the cause remains unclear or the incident persists. ## Evidence Limitations This generic runbook does not define universal connection-pool sizes, query timeout values, or database-specific commands. Consult the relevant service configuration and official database documentation.",
+        "bm25_score": 0.7344461486173657,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.030536130536130537,
+        "reranker_score": -2.364863395690918
+      },
+      {
+        "source": "data/docs/incident_response.md",
+        "page": null,
+        "chunk_id": 1,
+        "text": "Recent deployments and configuration changes. - Investigation steps already performed and their outcomes. - Mitigations attempted and whether they improved the situation. Do not include passwords, access tokens, or unnecessary personal data in incident reports. ## Severity and Communication Use the organization's official incident-severity definitions and communication channels. Incident updates should clearly distinguish confirmed facts from hypotheses. Do not invent impact estimates or declare recovery before verifying service health. ## Escalation Criteria Escalate to the owning service or specialist team when: - The issue requires access or expertise that the current responder does not have. - Customer impact continues despite initial investigation. - No safe mitigation has been identified. - The incident involves a critical dependency or suspected data integrity issue. Include collected evidence, actions already taken, current impact, and the next decision required. ## Recovery and Closure 1. Verify recovery using service health checks and relevant metrics. 2. Confirm that error rates and latency have returned toward the healthy baseline. 3. Document the timeline, confirmed root cause, contributing factors, and mitigation. 4. Record follow-up actions and owners. 5. Create",
+        "bm25_score": 2.2033985793275406,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.03149801587301587,
+        "reranker_score": -3.6801059246063232
+      }
+    ],
+    "checks": {
+      "has_citation_markers": true,
+      "citation_ids_resolve": true,
+      "citation_sources_in_retrieval": true,
+      "citation_quality_pass": true,
+      "abstention_quality_pass": null,
+      "expected_sources_retrieved": [
+        "deployment_rollback.md"
+      ],
+      "source_recall_at_5": 1.0,
+      "manual_answer_review_required": true
+    }
+  },
+  {
+    "question": "What is the company's on-call engineer's phone number?",
+    "answerable": false,
+    "answer": "The available documentation does not provide the company's on-call engineer phone number. Please consult the official on-call directory or incident policy.",
+    "citations": [],
+    "retrieval": [
+      {
+        "source": "data/docs/incident_response.md",
+        "page": null,
+        "chunk_id": 2,
+        "text": "and relevant metrics. 2. Confirm that error rates and latency have returned toward the healthy baseline. 3. Document the timeline, confirmed root cause, contributing factors, and mitigation. 4. Record follow-up actions and owners. 5. Create a post-incident review when required by organizational policy. ## Evidence Limitations This generic runbook does not define company-specific severity levels, response-time targets, or on-call contacts. Consult the organization's official incident policy for those details.",
+        "bm25_score": 2.7480764060023706,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.032018442622950824,
+        "reranker_score": -10.393893241882324
+      },
+      {
+        "source": "data/docs/incident_response.md",
+        "page": null,
+        "chunk_id": 0,
+        "text": "# Incident Response and Escalation Runbook ## Purpose Provide a consistent process for triaging, documenting, and escalating technical incidents. ## Initial Triage ### 1. Identify the impact Determine the affected service, user-visible symptoms, approximate start time, and scope of impact. ### 2. Inspect service health Compare current error rates, latency percentiles, traffic, and resource metrics with a known healthy baseline. ### 3. Investigate evidence Review relevant alerts, application logs, distributed traces, and dependency metrics. ### 4. Review recent changes Check recent deployments, configuration changes, infrastructure changes, and dependency incidents. ### 5. Avoid premature remediation Do not perform destructive or broad changes before understanding the likely failure area. Follow approved operational procedures. ## Evidence Collection Before escalating, collect: - Incident timestamps and time zone. - Affected services and endpoints. - Representative trace IDs or request IDs. - Relevant logs and metrics covering the incident window. - Recent deployments and configuration changes. - Investigation steps already performed and their outcomes. - Mitigations attempted and whether they improved the situation. Do not include passwords, access tokens, or unnecessary personal data in incident reports.",
+        "bm25_score": 0.5075556412850638,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.030090497737556562,
+        "reranker_score": -11.33808708190918
+      },
+      {
+        "source": "data/docs/deployment_rollback.md",
+        "page": null,
+        "chunk_id": 1,
+        "text": "deployment status, instance health, readiness checks, restart events, and rollout progress. ### 6. Determine the scope Establish whether the problem affects all instances or only instances running the new version. ## Rollback Decision Consider rollback when evidence strongly suggests that a recent release caused customer-impacting degradation and an approved rollback path exists. Before proceeding, verify whether database migrations, schema changes, or data-format changes could make rollback unsafe. Follow the organization's change-management and incident-response procedures. Do not perform a rollback solely because two events occurred at the same time. ## Recovery Verification After an approved rollback or mitigation: - Confirm that application instances and readiness checks are healthy. - Compare latency and error rates against the known healthy baseline. - Test affected endpoints using approved health checks. - Monitor for recurrence of the incident. ## Escalation Record the release identifier, deployment timestamps, configuration changes, affected endpoints, relevant logs, trace IDs, mitigation steps, and recovery evidence. Escalate to the service owner if the issue persists or rollback safety is uncertain. ## Evidence Limitations This runbook does not specify organization-specific approval requirements, deployment",
+        "bm25_score": 0.7587000222041769,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.030330882352941176,
+        "reranker_score": -11.341911315917969
+      },
+      {
+        "source": "data/docs/incident_response.md",
+        "page": null,
+        "chunk_id": 1,
+        "text": "Recent deployments and configuration changes. - Investigation steps already performed and their outcomes. - Mitigations attempted and whether they improved the situation. Do not include passwords, access tokens, or unnecessary personal data in incident reports. ## Severity and Communication Use the organization's official incident-severity definitions and communication channels. Incident updates should clearly distinguish confirmed facts from hypotheses. Do not invent impact estimates or declare recovery before verifying service health. ## Escalation Criteria Escalate to the owning service or specialist team when: - The issue requires access or expertise that the current responder does not have. - Customer impact continues despite initial investigation. - No safe mitigation has been identified. - The incident involves a critical dependency or suspected data integrity issue. Include collected evidence, actions already taken, current impact, and the next decision required. ## Recovery and Closure 1. Verify recovery using service health checks and relevant metrics. 2. Confirm that error rates and latency have returned toward the healthy baseline. 3. Document the timeline, confirmed root cause, contributing factors, and mitigation. 4. Record follow-up actions and owners. 5. Create",
+        "bm25_score": 0.5706972484757152,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.03177805800756621,
+        "reranker_score": -11.350333213806152
+      },
+      {
+        "source": "data/docs/database_troubleshooting.md",
+        "page": null,
+        "chunk_id": 0,
+        "text": "# Database Troubleshooting Runbook ## Purpose Investigate application incidents that may involve database latency, connectivity, or resource contention. ## Symptoms - API latency increases while application CPU usage remains normal. - Database query latency rises or throughput decreases. - Applications report connection timeouts or connection-pool acquisition timeouts. - Error rates increase for endpoints that depend on database queries. ## Investigation Steps ### 1. Check database health Review database availability, connection counts, resource utilization, and recent alerts. Compare current metrics with a known healthy period. ### 2. Inspect connection pools Check active, idle, waiting, and timed-out connections where those metrics are available. Pool exhaustion may cause application requests to wait even when CPU usage is low. ### 3. Analyze query performance Review slow-query logs, query execution times, and query plans where available. Investigate long-running transactions and lock contention. ### 4. Trace dependencies Use distributed traces to determine whether request time is spent acquiring a database connection, executing a query, or waiting on another service. ### 5. Review recent changes Check application releases, database migrations, configuration changes, traffic spikes, and changes to",
+        "bm25_score": 0.26539890791663123,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.028985507246376812,
+        "reranker_score": -11.371123313903809
+      }
+    ],
+    "checks": {
+      "has_citation_markers": false,
+      "citation_ids_resolve": false,
+      "citation_sources_in_retrieval": true,
+      "citation_quality_pass": null,
+      "abstention_quality_pass": true,
+      "expected_sources_retrieved": [],
+      "source_recall_at_5": null,
+      "manual_answer_review_required": true
+    }
+  },
+  {
+    "question": "What exact database connection-pool size should I configure?",
+    "answerable": false,
+    "answer": "To determine the exact database connection-pool size, you should not blindly increase it. [1] advises against increasing connection-pool size without considering the potential overload on the database. Consult the relevant service configuration and official database documentation for specific recommendations. [1] suggests not increasing the connection-pool size blindly, as excessive connections can overload the database.",
+    "citations": [
+      {
+        "citation_id": 1,
+        "source": "data/docs/database_troubleshooting.md",
+        "page": null,
+        "quote": "determine whether request time is spent acquiring a database connection, executing a query, or waiting on another service. ### 5. Review recent changes Check application releases, database migrations, configuration changes, traffic spikes, and changes to query patterns. ## Mitigation - Follow approved procedures for investigating or terminating harmful queries. - Address lock contention using database-specific operational procedures. - Consider rollback if a recent change is strongly associated with the incident and rollback is safe. - Do not increase connection-pool size blindly. Excessive connections can overload the database. ## Escalation Record the incident time window, affected services and endpoints, database metrics, connection-pool metrics, representative trace IDs, relevant query identifiers, and recent changes. Escalate to the database or service owner if the cause remains unclear or the incident persists. ## Evidence Limitations This generic runbook does not define universal connection-pool sizes, query timeout values, or database-specific commands. Consult the relevant service configuration and official database documentation."
+      }
+    ],
+    "retrieval": [
+      {
+        "source": "data/docs/database_troubleshooting.md",
+        "page": null,
+        "chunk_id": 1,
+        "text": "determine whether request time is spent acquiring a database connection, executing a query, or waiting on another service. ### 5. Review recent changes Check application releases, database migrations, configuration changes, traffic spikes, and changes to query patterns. ## Mitigation - Follow approved procedures for investigating or terminating harmful queries. - Address lock contention using database-specific operational procedures. - Consider rollback if a recent change is strongly associated with the incident and rollback is safe. - Do not increase connection-pool size blindly. Excessive connections can overload the database. ## Escalation Record the incident time window, affected services and endpoints, database metrics, connection-pool metrics, representative trace IDs, relevant query identifiers, and recent changes. Escalate to the database or service owner if the cause remains unclear or the incident persists. ## Evidence Limitations This generic runbook does not define universal connection-pool sizes, query timeout values, or database-specific commands. Consult the relevant service configuration and official database documentation.",
+        "bm25_score": 3.996287020812882,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.03252247488101534,
+        "reranker_score": -1.5479066371917725
+      },
+      {
+        "source": "data/docs/database_troubleshooting.md",
+        "page": null,
+        "chunk_id": 0,
+        "text": "# Database Troubleshooting Runbook ## Purpose Investigate application incidents that may involve database latency, connectivity, or resource contention. ## Symptoms - API latency increases while application CPU usage remains normal. - Database query latency rises or throughput decreases. - Applications report connection timeouts or connection-pool acquisition timeouts. - Error rates increase for endpoints that depend on database queries. ## Investigation Steps ### 1. Check database health Review database availability, connection counts, resource utilization, and recent alerts. Compare current metrics with a known healthy period. ### 2. Inspect connection pools Check active, idle, waiting, and timed-out connections where those metrics are available. Pool exhaustion may cause application requests to wait even when CPU usage is low. ### 3. Analyze query performance Review slow-query logs, query execution times, and query plans where available. Investigate long-running transactions and lock contention. ### 4. Trace dependencies Use distributed traces to determine whether request time is spent acquiring a database connection, executing a query, or waiting on another service. ### 5. Review recent changes Check application releases, database migrations, configuration changes, traffic spikes, and changes to",
+        "bm25_score": 1.548665211776978,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.03252247488101534,
+        "reranker_score": -7.152198314666748
+      },
+      {
+        "source": "data/docs/runbook.md",
+        "page": null,
+        "chunk_id": 0,
+        "text": "# API Latency Troubleshooting ## Initial investigation Compare p50, p95, and p99 latency against the last healthy period. Identify affected endpoints and when the problem started. ## Dependency checks Normal CPU usage does not rule out database connection pool exhaustion, network delays, lock contention, thread pool starvation, or slow downstream services. Inspect distributed traces and dependency-specific latency before restarting services. ## Recent deployments If latency increased after deployment, compare the current version and configuration with the last known-good release. Review changed queries, connection pool settings, errors, and downstream timeouts. ## Escalation Capture timestamps, affected endpoints, representative trace IDs, recent changes, and relevant metrics before escalating to the service owner.",
+        "bm25_score": 0.30473024802018606,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.03149801587301587,
+        "reranker_score": -8.055484771728516
+      },
+      {
+        "source": "data/docs/deployment_rollback.md",
+        "page": null,
+        "chunk_id": 1,
+        "text": "deployment status, instance health, readiness checks, restart events, and rollout progress. ### 6. Determine the scope Establish whether the problem affects all instances or only instances running the new version. ## Rollback Decision Consider rollback when evidence strongly suggests that a recent release caused customer-impacting degradation and an approved rollback path exists. Before proceeding, verify whether database migrations, schema changes, or data-format changes could make rollback unsafe. Follow the organization's change-management and incident-response procedures. Do not perform a rollback solely because two events occurred at the same time. ## Recovery Verification After an approved rollback or mitigation: - Confirm that application instances and readiness checks are healthy. - Compare latency and error rates against the known healthy baseline. - Test affected endpoints using approved health checks. - Monitor for recurrence of the incident. ## Escalation Record the release identifier, deployment timestamps, configuration changes, affected endpoints, relevant logs, trace IDs, mitigation steps, and recovery evidence. Escalate to the service owner if the issue persists or rollback safety is uncertain. ## Evidence Limitations This runbook does not specify organization-specific approval requirements, deployment",
+        "bm25_score": 0.24366943514152895,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.030776515151515152,
+        "reranker_score": -11.411736488342285
+      },
+      {
+        "source": "data/docs/incident_response.md",
+        "page": null,
+        "chunk_id": 0,
+        "text": "# Incident Response and Escalation Runbook ## Purpose Provide a consistent process for triaging, documenting, and escalating technical incidents. ## Initial Triage ### 1. Identify the impact Determine the affected service, user-visible symptoms, approximate start time, and scope of impact. ### 2. Inspect service health Compare current error rates, latency percentiles, traffic, and resource metrics with a known healthy baseline. ### 3. Investigate evidence Review relevant alerts, application logs, distributed traces, and dependency metrics. ### 4. Review recent changes Check recent deployments, configuration changes, infrastructure changes, and dependency incidents. ### 5. Avoid premature remediation Do not perform destructive or broad changes before understanding the likely failure area. Follow approved operational procedures. ## Evidence Collection Before escalating, collect: - Incident timestamps and time zone. - Affected services and endpoints. - Representative trace IDs or request IDs. - Relevant logs and metrics covering the incident window. - Recent deployments and configuration changes. - Investigation steps already performed and their outcomes. - Mitigations attempted and whether they improved the situation. Do not include passwords, access tokens, or unnecessary personal data in incident reports.",
+        "bm25_score": 0.0,
+        "retrieval_method": "bm25",
+        "rrf_score": 0.02919863597612958,
+        "reranker_score": -11.428797721862793
+      }
+    ],
+    "checks": {
+      "has_citation_markers": true,
+      "citation_ids_resolve": true,
+      "citation_sources_in_retrieval": true,
+      "citation_quality_pass": null,
+      "abstention_quality_pass": false,
+      "expected_sources_retrieved": [],
+      "source_recall_at_5": null,
+      "manual_answer_review_required": true
+    }
+  }
+]
